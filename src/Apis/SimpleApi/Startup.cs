@@ -1,11 +1,11 @@
-using System;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using SimpleApi.Helpers;
+using System;
 
 namespace SimpleApi
 {
@@ -27,29 +27,16 @@ namespace SimpleApi
             services.AddDistributedMemoryCache();
 
             services.AddAuthentication("token")
-                // JWT tokens
-                .AddJwtBearer("token", options =>
-                {
-                    options.Authority = MyConstants.Authority;
-
-                    options.TokenValidationParameters.ValidTypes = new[] { "at+jwt" };
-
-                    options.TokenValidationParameters = new TokenValidationParameters
-                    {
-                        ValidateAudience = false
-                    };
-                })
-                
                 // reference tokens
-                .AddOAuth2Introspection("introspection", options =>
+                .AddOAuth2Introspection("token", options =>
                 {
                     options.Authority = MyConstants.Authority;
                     options.EnableCaching = true;
                     options.CacheDuration = TimeSpan.FromMinutes(15);
                     options.SaveToken = true;
 
-                    options.ClientId = "simple-api";
-                    options.ClientSecret = "secret";
+                    options.ClientId = MyConstants.IntrospectionClientId;
+                    options.ClientSecret = MyConstants.IntrospectionClientSecret;
                 });
 
             services.AddAuthorization(options =>
@@ -57,7 +44,6 @@ namespace SimpleApi
                 options.AddPolicy("ApiScope", policy =>
                 {
                     policy.RequireAuthenticatedUser();
-                    policy.RequireClaim("scope", "api1"); 
                 });
             });
 
@@ -66,16 +52,6 @@ namespace SimpleApi
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Api", Version = "v1" });
             });
 
-            services.AddCors(options =>
-            {
-                // this defines a CORS policy called "default"
-                options.AddPolicy("default", policy =>
-                {
-                    policy.WithOrigins("https://localhost:44304", "https://localhost:44305")
-                        .AllowAnyHeader()
-                        .AllowAnyMethod();
-                });
-            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -97,10 +73,12 @@ namespace SimpleApi
             app.UseAuthentication();
             app.UseAuthorization();
 
+            app.UseMiddleware<MyTokenHandler>();
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers()
-                    .RequireAuthorization("ApiScope"); 
+                    .RequireAuthorization("ApiScope");
             });
         }
     }

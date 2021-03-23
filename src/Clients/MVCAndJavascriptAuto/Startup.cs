@@ -12,10 +12,7 @@ using MVCAndJavascriptAuto.Middlewares;
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
-using System.Threading.Tasks;
 
 namespace MVCAndJavascriptAuto
 {
@@ -47,16 +44,19 @@ namespace MVCAndJavascriptAuto
                 {
                     options.Cookie.Name = "oidc";
                     options.Cookie.HttpOnly = true;
-                    options.Cookie.SameSite = SameSiteMode.Strict;
+                    options.Cookie.SameSite = SameSiteMode.Lax;
                     options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+                    options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
+                    options.Cookie.MaxAge = TimeSpan.FromHours(10);
+                    options.SlidingExpiration = true;
                 })
                 .AddOpenIdConnect("oidc", options =>
                 {
                     options.Authority = MyConstants.Authority;
-                    options.RequireHttpsMetadata = false;
+                    options.RequireHttpsMetadata = true;
 
-                    options.ClientId = "mvc-and-js-auto";
-                    options.ClientSecret = "super-secret";
+                    options.ClientId = MyConstants.ClientAppClientId;
+                    options.ClientSecret = MyConstants.ClientAppClientSecret;
 
                     options.ResponseType = "code";
                     options.UsePkce = true;
@@ -65,9 +65,11 @@ namespace MVCAndJavascriptAuto
                     options.Scope.Add("openid");
                     options.Scope.Add("profile");
                     options.Scope.Add("email");
-                    options.Scope.Add("address");
-                    options.Scope.Add("website");
-                    options.Scope.Add("api1");
+                    //options.Scope.Add("phone");
+                    options.Scope.Add("offline_access");
+
+                    options.Scope.Add("authorization_group");
+                    options.Scope.Add("entitlement_group");
 
                     options.ClaimActions.MapAll();
 

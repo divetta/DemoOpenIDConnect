@@ -1,9 +1,6 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace MVCAndJavascriptAuto.Controllers
 {
@@ -16,9 +13,7 @@ namespace MVCAndJavascriptAuto.Controllers
         }
 
         public IActionResult Logout() =>
-            SignOut(new Microsoft.AspNetCore.Authentication.AuthenticationProperties()
-            {
-                RedirectUri = "../logout.html"
-            },new string[] { "oidc", "Cookies" });
+            SignOut(new AuthenticationProperties()
+            { RedirectUri = "../logout.html" }, new string[] { "oidc", "Cookies" });
     }
 }

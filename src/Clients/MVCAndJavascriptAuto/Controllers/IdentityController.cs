@@ -20,7 +20,6 @@ namespace MVCAndJavascriptAuto.Controllers
                 GivenName = User.Claims.Where(c => c.Type == "given_name").First().Value,
                 FamilyName = User.Claims.Where(c => c.Type == "family_name").First().Value,
                 Email = User.Claims.Where(c => c.Type == "email").First().Value,
-                WebSite = User.Claims.Where(c => c.Type == "website").First().Value,
             };
 
             return new JsonResult(user);
