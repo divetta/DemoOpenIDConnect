@@ -11,4 +11,5 @@
 
     public const string IntrospectionClientId = "simple-api";
     public const string IntrospectionClientSecret = "secret";
+
 }
