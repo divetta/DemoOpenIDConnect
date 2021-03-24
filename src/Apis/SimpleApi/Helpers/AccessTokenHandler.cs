@@ -12,12 +12,12 @@ using System.Threading.Tasks;
 
 namespace SimpleApi.Helpers
 {
-    public class MyTokenHandler
+    public class AccessTokenHandler
     {
         private readonly RequestDelegate _next;
         private readonly IDistributedCache _cache;
 
-        public MyTokenHandler(RequestDelegate next, IDistributedCache cache)
+        public AccessTokenHandler(RequestDelegate next, IDistributedCache cache)
         {
             _next = next;
             _cache = cache;

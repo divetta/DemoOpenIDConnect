@@ -73,7 +73,7 @@ namespace SimpleApi
             app.UseAuthentication();
             app.UseAuthorization();
 
-            app.UseMiddleware<MyTokenHandler>();
+            app.UseMiddleware<AccessTokenHandler>();
 
             app.UseEndpoints(endpoints =>
             {

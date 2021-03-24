@@ -12,11 +12,11 @@ using System.Threading.Tasks;
 
 namespace MVCAndJavascriptAuto.Middlewares
 {
-    public class MyTokenHandler : DelegatingHandler
+    public class OcelotDelegatingHandler : DelegatingHandler
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public MyTokenHandler(
+        public OcelotDelegatingHandler(
             IHttpContextAccessor httpContextAccessor)
         {
             _httpContextAccessor = httpContextAccessor;
@@ -37,6 +37,7 @@ namespace MVCAndJavascriptAuto.Middlewares
             var expirestoken = await _httpContextAccessor.HttpContext.GetTokenAsync("expires_at");
             var expires_at = string.IsNullOrEmpty(expirestoken) ? DateTime.MinValue : DateTime.Parse(expirestoken);
 
+            // Token not valid. Use Refresh Token to get a new access_token and refresh_token.
             if (DateTime.UtcNow > expires_at.ToUniversalTime())
             {
                 var refreshClient = new HttpClient();

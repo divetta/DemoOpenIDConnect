@@ -26,7 +26,7 @@ namespace MVCAndJavascriptAuto
 
             services.AddHttpClient();
 
-            services.AddOcelot().AddDelegatingHandler<MyTokenHandler>(true);
+            services.AddOcelot().AddDelegatingHandler<OcelotDelegatingHandler>(true);
 
             services.AddSingleton<IDiscoveryCache>(r =>
             {
@@ -65,7 +65,6 @@ namespace MVCAndJavascriptAuto
                     options.Scope.Add("openid");
                     options.Scope.Add("profile");
                     options.Scope.Add("email");
-                    //options.Scope.Add("phone");
                     options.Scope.Add("offline_access");
 
                     options.Scope.Add("authorization_group");

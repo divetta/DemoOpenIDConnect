@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using MVCAndJavascriptAuto.Model;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -14,15 +13,12 @@ namespace MVCAndJavascriptAuto.Controllers
         [Authorize]
         public async Task<IActionResult> GetAsync()
         {
-            var user = new User()
-            {
-                Name = User.Claims.Where(c => c.Type == "name").First().Value,
-                GivenName = User.Claims.Where(c => c.Type == "given_name").First().Value,
-                FamilyName = User.Claims.Where(c => c.Type == "family_name").First().Value,
-                Email = User.Claims.Where(c => c.Type == "email").First().Value,
-            };
-
-            return new JsonResult(user);
+            return new JsonResult(new {
+                Name = User.Claims.FirstOrDefault(c => c.Type == "name").Value,
+                GivenName = User.Claims.FirstOrDefault(c => c.Type == "given_name").Value,
+                FamilyName = User.Claims.FirstOrDefault(c => c.Type == "family_name").Value,
+                Email = User.Claims.FirstOrDefault(c => c.Type == "email").Value
+            });
         }
 
         [HttpGet]
