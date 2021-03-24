@@ -17,7 +17,7 @@ document.getElementById("logout").addEventListener("click", logout, false);
 load();
 
 function api() {
-    var url = "https://localhost:44306/api/identity";
+    var url = "https://localhost:44302/api/identity";
 
     var xhr = new XMLHttpRequest();
     xhr.open("GET", url);
@@ -41,7 +41,7 @@ function load() {
 
     var isAuthenticated = false;
 
-    var url = "https://localhost:44306/identity/isauthenticated";
+    var url = "https://localhost:44302/identity/isauthenticated";
     var xhr = new XMLHttpRequest();
     xhr.open("GET", url);
     xhr.onload = function () {
@@ -58,7 +58,7 @@ function load() {
 
 function loadAuthData() {
     if (sessionStorage.getItem("isAuthenticated") === "true") {
-        var url = "https://localhost:44306/identity"
+        var url = "https://localhost:44302/identity"
 
         var xhr = new XMLHttpRequest();
         xhr.open("GET", url);
