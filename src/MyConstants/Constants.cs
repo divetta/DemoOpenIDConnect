@@ -12,5 +12,8 @@
 
     public const string IntrospectionClientId = "simple-api";
     public const string IntrospectionClientSecret = "secret";
+
+    public const string ClientAppWebFormsClientId = "web-forms";
+    public const string ClientAppWebFormsClientSecret = "super-secret-webforms";
     #endregion
 }

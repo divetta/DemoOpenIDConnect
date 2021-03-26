@@ -75,6 +75,29 @@ namespace IdentityServer
                         "authorization_group",
                         "entitlement_group"
                     }
+                },
+                new Client
+                {
+                    ClientId = MyConstants.ClientAppWebFormsClientId,
+                    ClientName = "Web Forms",
+                    AllowedGrantTypes = GrantTypes.Code,
+                    RequireConsent = false,
+                    AllowOfflineAccess = true,
+                    AccessTokenType = AccessTokenType.Reference,
+
+                    RedirectUris = { "https://localhost:44304/" },
+                    PostLogoutRedirectUris = { "https://localhost:44304/" },
+                    ClientSecrets = {new Secret(MyConstants.ClientAppWebFormsClientSecret.ToSha256()) },
+                    AllowedScopes =
+                    {
+                        IdentityServerConstants.StandardScopes.OpenId,
+                        IdentityServerConstants.StandardScopes.Profile,
+                        IdentityServerConstants.StandardScopes.Email,
+                        IdentityServerConstants.StandardScopes.Address,
+                        IdentityServerConstants.StandardScopes.Phone,
+                        "authorization_group",
+                        "entitlement_group"
+                    }
                 }
             };
         }
