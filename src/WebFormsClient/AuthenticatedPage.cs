@@ -10,9 +10,7 @@ namespace WebFormsClient
         protected override void OnPreLoad(EventArgs e)
         {
             if (!Request.IsAuthenticated)
-            {
                 Context.GetOwinContext().Authentication.Challenge(OpenIdConnectAuthenticationDefaults.AuthenticationType);
-            }
 
             base.OnPreLoad(e);
         }
