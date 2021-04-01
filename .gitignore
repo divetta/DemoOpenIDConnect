@@ -350,3 +350,4 @@ MigrationBackup/
 .ionide/
 /src/Apis/SimpleApi/.config/dotnet-tools.json
 /src/Clients/MVCAndJavascriptAuto/.config/dotnet-tools.json
+
