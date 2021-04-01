@@ -11,7 +11,7 @@ namespace MVCAndJavascriptAuto.Controllers
     {
         [HttpGet]
         [Authorize]
-        public async Task<IActionResult> GetAsync()
+        public IActionResult Get()
         {
             return new JsonResult(new {
                 Name = User.Claims.FirstOrDefault(c => c.Type == "name").Value,

@@ -98,6 +98,29 @@ namespace IdentityServer
                         "authorization_group",
                         "entitlement_group"
                     }
+                },
+                new Client
+                {
+                    ClientId = "123456",
+                    ClientName = "Web Forms - Daimler",
+                    AllowedGrantTypes = GrantTypes.Code,
+                    RequireConsent = false,
+                    AllowOfflineAccess = true,
+                    AccessTokenType = AccessTokenType.Reference,
+
+                    RedirectUris = { "https://localhost:44320/signin-oidc/" },
+                    PostLogoutRedirectUris = { "https://localhost:44320" },
+                    ClientSecrets = {new Secret("654321".ToSha256()) },
+                    AllowedScopes =
+                    {
+                        IdentityServerConstants.StandardScopes.OpenId,
+                        IdentityServerConstants.StandardScopes.Profile,
+                        IdentityServerConstants.StandardScopes.Email,
+                        IdentityServerConstants.StandardScopes.Address,
+                        IdentityServerConstants.StandardScopes.Phone,
+                        "authorization_group",
+                        "entitlement_group"
+                    }
                 }
             };
         }
