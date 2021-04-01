@@ -28,13 +28,7 @@ function api() {
 }
 
 function logout() {
-
-    if (sessionStorage.getItem("isAuthenticated") === "true") {
-        window.location = "/Authentication/Logout"
-    }
-    sessionStorage.removeItem("isAuthenticated");
-    sessionStorage.removeItem("authData");
-
+    window.location = "/Authentication/Logout"
 }
 
 function load() {
@@ -44,7 +38,6 @@ function load() {
     xhr.open("GET", url);
     xhr.onload = function () {
         var jsonData = JSON.parse(xhr.responseText);
-        sessionStorage.setItem("authData", JSON.stringify(jsonData, null, 2));
         document.getElementById('results').innerHTML = "Bem vindo: " + JSON.stringify(jsonData, null, 2);
     }
     xhr.send();

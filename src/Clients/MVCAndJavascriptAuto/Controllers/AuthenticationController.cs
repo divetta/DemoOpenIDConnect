@@ -7,13 +7,11 @@ namespace MVCAndJavascriptAuto.Controllers
     [Authorize]
     public class AuthenticationController : Controller
     {
-        public void Login()
-        {
-            Response.Redirect("../");
-        }
-
         public IActionResult Logout() =>
-            SignOut(new AuthenticationProperties()
-            { RedirectUri = "../logout.html" }, new string[] { "oidc", "Cookies" });
+            SignOut(new string[] { "oidc", "Cookies" });
+
+        //public IActionResult Logout() =>
+        //    SignOut(new AuthenticationProperties()
+        //    { RedirectUri = "../logout.html" }, new string[] { "oidc", "Cookies" });
     }
 }

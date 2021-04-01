@@ -20,12 +20,5 @@ namespace MVCAndJavascriptAuto.Controllers
                 Email = User.Claims.FirstOrDefault(c => c.Type == "email").Value
             });
         }
-
-        [HttpGet]
-        [Route("isauthenticated")]
-        public IActionResult IsAuthenticated()
-        {
-            return new JsonResult(User.Identity.IsAuthenticated);
-        }
     }
 }
