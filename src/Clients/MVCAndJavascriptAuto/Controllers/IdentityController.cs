@@ -1,7 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace MVCAndJavascriptAuto.Controllers
 {
@@ -10,7 +8,6 @@ namespace MVCAndJavascriptAuto.Controllers
     public class IdentityController : ControllerBase
     {
         [HttpGet]
-        [Authorize]
         public IActionResult Get()
         {
             return new JsonResult(new {
