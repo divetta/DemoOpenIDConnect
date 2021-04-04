@@ -121,7 +121,7 @@ namespace MVCAndJavascriptAuto.Helpers
         {
             HttpClient client = new HttpClient(new HttpClientHandler())
             {
-                BaseAddress = new Uri($"{ConfigurationHelper.Instance.Authority}/as/token.oauth2")
+                BaseAddress = new Uri($"{ConfigurationHelper.Instance.TokenEndpoint}")
             };
             var fields = new Dictionary<string, string>
             {

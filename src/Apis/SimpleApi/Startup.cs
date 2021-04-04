@@ -28,17 +28,17 @@ namespace SimpleApi
             services.AddDistributedMemoryCache();
 
             services.AddAuthentication("token")
-                // reference tokens
-                .AddOAuth2Introspection("token", options =>
-                {
-                    options.Authority = ConfigurationHelper.Instance.Authority;
-                    options.EnableCaching = true;
-                    options.CacheDuration = TimeSpan.FromMinutes(15);
-                    options.SaveToken = true;
+            // reference tokens
+            .AddOAuth2Introspection("token", options =>
+            {
+                options.Authority = ConfigurationHelper.Instance.Authority;
+                options.EnableCaching = true;
+                options.CacheDuration = TimeSpan.FromMinutes(15);
+                options.SaveToken = true;
 
-                    options.ClientId = ConfigurationHelper.Instance.ClientId;
-                    options.ClientSecret = ConfigurationHelper.Instance.ClientSecret;
-                });
+                options.ClientId = ConfigurationHelper.Instance.ClientId;
+                options.ClientSecret = ConfigurationHelper.Instance.ClientSecret;
+            });
 
             services.AddAuthorization(options =>
             {

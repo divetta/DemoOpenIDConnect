@@ -17,7 +17,7 @@ document.getElementById("logout").addEventListener("click", logout, false);
 load();
 
 function api() {
-    var url = "https://localhost:44302/api/identity";
+    var url = "/api/identity";
 
     var xhr = new XMLHttpRequest();
     xhr.open("GET", url);
@@ -32,7 +32,7 @@ function logout() {
 }
 
 function load() {
-    var url = "https://localhost:44302/identity"
+    var url = "/identity"
 
     var xhr = new XMLHttpRequest();
     xhr.open("GET", url);

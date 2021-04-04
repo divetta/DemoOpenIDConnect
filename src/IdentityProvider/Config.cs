@@ -62,8 +62,8 @@ namespace IdentityServer
                     AllowOfflineAccess = true,
                     AccessTokenType = AccessTokenType.Reference,
 
-                    RedirectUris = { "https://localhost:44302/signin-oidc" },
-                    PostLogoutRedirectUris = { "https://localhost:44302/signout-callback-oidc" },
+                    RedirectUris = { "https://localhost:44306/signin-oidc" },
+                    PostLogoutRedirectUris = { "https://localhost:44306/signout-callback-oidc" },
                     ClientSecrets = {new Secret("024b6081-7d02-4f64-bf22-cb740e8c2208".ToSha256()) },
                     AllowedScopes =
                     {
@@ -78,7 +78,7 @@ namespace IdentityServer
                 },
                 new Client
                 {
-                    ClientId = MyConstants.ClientAppWebFormsClientId,
+                    ClientId = "web-forms",
                     ClientName = "Web Forms",
                     AllowedGrantTypes = GrantTypes.Code,
                     RequireConsent = false,
@@ -87,7 +87,7 @@ namespace IdentityServer
 
                     RedirectUris = { "https://localhost:44304/" },
                     PostLogoutRedirectUris = { "https://localhost:44304/" },
-                    ClientSecrets = {new Secret(MyConstants.ClientAppWebFormsClientSecret.ToSha256()) },
+                    ClientSecrets = {new Secret("super-secret-webforms".ToSha256()) },
                     AllowedScopes =
                     {
                         IdentityServerConstants.StandardScopes.OpenId,

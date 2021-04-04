@@ -134,7 +134,6 @@ namespace MVCAndJavascriptAuto.Helpers
                     catch (Exception ex)
                     {
                         responseText = ex.Message;
-                        //_logger.WriteError("Logout failed", ex);
                     }
                     finally
                     {
@@ -155,7 +154,7 @@ namespace MVCAndJavascriptAuto.Helpers
 
 
                     //context.Response.Redirect(logoutUri);
-                    context.HttpContext.Response.Body.Write(StringToByteArray(responseText), 0, StringToByteArray(responseText).Length);
+                    //context.HttpContext.Response.Body.Write(StringToByteArray(responseText), 0, StringToByteArray(responseText).Length);
                     //context.HandleResponse();
 
 
