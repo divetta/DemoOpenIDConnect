@@ -42,7 +42,7 @@ namespace SimpleApi.Helpers
 
                     var response = await client.GetUserInfoAsync(new UserInfoRequest
                     {
-                        Address = MyConstants.UserInfoEndpoint,
+                        Address = ConfigurationHelper.Instance.UserInfoEndpoint,
                         Token = token
                     });
 

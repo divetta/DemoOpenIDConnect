@@ -17,10 +17,10 @@ namespace WebFormsClient
 {
     public class Startup
     {
-        string clientId = MyConstants.ClientAppWebFormsClientId;
-        string clientSecret = MyConstants.ClientAppWebFormsClientSecret;
+        string clientId = "web-forms";
+        string clientSecret = "super-secret-webforms";
         string redirectUri = "https://localhost:44304/";
-        string authority = MyConstants.Authority;
+        string authority = "https://localhost:44301";
 
         /// <summary>
         /// Configure OWIN to use OpenIdConnect 

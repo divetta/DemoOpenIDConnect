@@ -1,6 +1,3 @@
-using IdentityModel;
-using IdentityModel.Client;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authorization;
@@ -10,13 +7,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
-using Microsoft.IdentityModel.Tokens;
 using MVCAndJavascriptAuto.Helpers;
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
-using System;
-using System.Net.Http;
-using System.Threading.Tasks;
 
 namespace MVCAndJavascriptAuto
 {
@@ -27,7 +20,7 @@ namespace MVCAndJavascriptAuto
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
-            ConfigurationHelper.Instance.PropagateConfiguration(configuration);
+            ConfigurationHelper.Instance.PropagateConfigurationAsync(configuration).Wait();
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -40,69 +33,30 @@ namespace MVCAndJavascriptAuto
 
             services.AddOcelot().AddDelegatingHandler<OcelotDelegatingHandler>(true);
 
-            services.AddSingleton<IDiscoveryCache>(r =>
-            {
-                var factory = r.GetRequiredService<IHttpClientFactory>();
-                return new DiscoveryCache(MyConstants.Authority, () => factory.CreateClient());
-            });
-
-
             services.AddAuthentication(options =>
             {
                 options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = "oidc";
+                options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
             })
-                .AddCookie(options =>
-                {
-                    options.Cookie.Name = "oidc";
-                    options.Cookie.HttpOnly = true;
-                    options.Cookie.SameSite = SameSiteMode.Lax;
-                    options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
-                    options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
-                    options.Cookie.MaxAge = TimeSpan.FromHours(10);
-                    options.SlidingExpiration = true;
-                })
-                .AddOpenIdConnect("oidc", options =>
-                {
-                    options.Authority = MyConstants.Authority;
-                    options.RequireHttpsMetadata = true;
+            .AddCookie(options =>
+            {
+                options = CookieAuthenticationOptionsFactory.Instance.GetDefaultOptions(options);
+            })
+            .AddOpenIdConnect(options =>
+            {
+                options = OidcOptionsFactory.Instance.GetDefaultOptions(options);
 
-                    options.ClientId = ConfigurationHelper.Instance.ClientId;
-                    options.ClientSecret = ConfigurationHelper.Instance.ClientSecret;
+                options.Scope.Clear();
+                options.Scope.Add("openid");
+                options.Scope.Add("profile");
+                options.Scope.Add("email");
+                options.Scope.Add("offline_access");
 
-                    options.ResponseType = "code";
-                    options.UsePkce = true;
+                options.Scope.Add("authorization_group");
+                options.Scope.Add("entitlement_group");
 
-                    options.Scope.Clear();
-                    options.Scope.Add("openid");
-                    options.Scope.Add("profile");
-                    options.Scope.Add("email");
-                    options.Scope.Add("offline_access");
-
-                    options.Scope.Add("authorization_group");
-                    options.Scope.Add("entitlement_group");
-
-                    options.ClaimActions.MapAll();
-
-                    options.GetClaimsFromUserInfoEndpoint = true;
-                    options.SaveTokens = true;
-
-                    options.TokenValidationParameters = new TokenValidationParameters
-                    {
-                        NameClaimType = JwtClaimTypes.Name,
-                        RoleClaimType = JwtClaimTypes.Role,
-                    };
-
-                    options.Events = new OpenIdConnectEvents
-                    {
-                        OnRedirectToIdentityProvider = context =>
-                        {
-                            if (!string.IsNullOrEmpty(ConfigurationHelper.Instance.AcrValues))
-                                context.ProtocolMessage.SetParameter("acr_values", ConfigurationHelper.Instance.AcrValues);
-                            return Task.FromResult(0);
-                        }
-                    };
-                });
+                options.CallbackPath = new PathString("/signin-oidc");
+            });
 
             services.AddAuthorization(options =>
             {

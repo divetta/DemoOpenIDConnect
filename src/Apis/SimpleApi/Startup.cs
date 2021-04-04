@@ -14,7 +14,7 @@ namespace SimpleApi
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
-            ConfigurationHelper.Instance.PropagateConfiguration(configuration);
+            ConfigurationHelper.Instance.PropagateConfigurationAsync(configuration).Wait();
         }
 
         public IConfiguration Configuration { get; }
