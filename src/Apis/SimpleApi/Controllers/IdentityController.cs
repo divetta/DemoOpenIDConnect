@@ -10,7 +10,7 @@ namespace SimpleApi.Controllers
     {
         [HttpGet]
         [ClaimRequirement("BMBVU.Bens-Imoveis-Escrita")]
-        public async Task<IActionResult> GetAsync()
+        public IActionResult Get()
         {
             var claims = (List<string>)HttpContext.Items["UserClaims"];
             return new JsonResult(claims);

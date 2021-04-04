@@ -10,7 +10,7 @@ using System.Net.Http.Headers;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace MVCAndJavascriptAuto.Middlewares
+namespace MVCAndJavascriptAuto.Helpers
 {
     public class OcelotDelegatingHandler : DelegatingHandler
     {
@@ -44,9 +44,9 @@ namespace MVCAndJavascriptAuto.Middlewares
                 var tokenResult = await refreshClient.RequestRefreshTokenAsync(new RefreshTokenRequest
                 {
                     Address = MyConstants.TokenEndpoint,
-
-                    ClientId = MyConstants.ClientAppClientId,
-                    ClientSecret = MyConstants.ClientAppClientSecret,
+                    
+                    ClientId = ConfigurationHelper.Instance.ClientId,
+                    ClientSecret = ConfigurationHelper.Instance.ClientSecret,
 
                     RefreshToken = await _httpContextAccessor.HttpContext.GetTokenAsync("refresh_token")
                 });

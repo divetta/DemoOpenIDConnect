@@ -14,6 +14,7 @@ namespace SimpleApi
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            ConfigurationHelper.Instance.PropagateConfiguration(configuration);
         }
 
         public IConfiguration Configuration { get; }
@@ -30,13 +31,13 @@ namespace SimpleApi
                 // reference tokens
                 .AddOAuth2Introspection("token", options =>
                 {
-                    options.Authority = MyConstants.Authority;
+                    options.Authority = ConfigurationHelper.Instance.Authority;
                     options.EnableCaching = true;
                     options.CacheDuration = TimeSpan.FromMinutes(15);
                     options.SaveToken = true;
 
-                    options.ClientId = MyConstants.IntrospectionClientId;
-                    options.ClientSecret = MyConstants.IntrospectionClientSecret;
+                    options.ClientId = ConfigurationHelper.Instance.ClientId;
+                    options.ClientSecret = ConfigurationHelper.Instance.ClientSecret;
                 });
 
             services.AddAuthorization(options =>

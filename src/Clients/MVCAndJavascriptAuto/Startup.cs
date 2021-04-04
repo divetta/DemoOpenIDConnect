@@ -2,23 +2,34 @@ using IdentityModel;
 using IdentityModel.Client;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
-using MVCAndJavascriptAuto.Middlewares;
+using MVCAndJavascriptAuto.Helpers;
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
 using System;
 using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace MVCAndJavascriptAuto
 {
     public class Startup
     {
+        public IConfiguration Configuration { get; }
+
+        public Startup(IConfiguration configuration)
+        {
+            Configuration = configuration;
+            ConfigurationHelper.Instance.PropagateConfiguration(configuration);
+        }
+
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
@@ -56,8 +67,8 @@ namespace MVCAndJavascriptAuto
                     options.Authority = MyConstants.Authority;
                     options.RequireHttpsMetadata = true;
 
-                    options.ClientId = MyConstants.ClientAppClientId;
-                    options.ClientSecret = MyConstants.ClientAppClientSecret;
+                    options.ClientId = ConfigurationHelper.Instance.ClientId;
+                    options.ClientSecret = ConfigurationHelper.Instance.ClientSecret;
 
                     options.ResponseType = "code";
                     options.UsePkce = true;
@@ -80,6 +91,16 @@ namespace MVCAndJavascriptAuto
                     {
                         NameClaimType = JwtClaimTypes.Name,
                         RoleClaimType = JwtClaimTypes.Role,
+                    };
+
+                    options.Events = new OpenIdConnectEvents
+                    {
+                        OnRedirectToIdentityProvider = context =>
+                        {
+                            if (!string.IsNullOrEmpty(ConfigurationHelper.Instance.AcrValues))
+                                context.ProtocolMessage.SetParameter("acr_values", ConfigurationHelper.Instance.AcrValues);
+                            return Task.FromResult(0);
+                        }
                     };
                 });
 

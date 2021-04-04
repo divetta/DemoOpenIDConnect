@@ -55,7 +55,7 @@ namespace IdentityServer
                 // OpenID Connect implicit flow client (MVC and JS - automatic)
                 new Client
                 {
-                    ClientId = MyConstants.ClientAppClientId,
+                    ClientId = "cd2c4616-d527-46b8-b5db-9511da1c8545",
                     ClientName = "MVC and JS Client - Automatic",
                     AllowedGrantTypes = GrantTypes.Code,
                     RequireConsent = false,
@@ -64,7 +64,7 @@ namespace IdentityServer
 
                     RedirectUris = { "https://localhost:44302/signin-oidc" },
                     PostLogoutRedirectUris = { "https://localhost:44302/signout-callback-oidc" },
-                    ClientSecrets = {new Secret(MyConstants.ClientAppClientSecret.ToSha256()) },
+                    ClientSecrets = {new Secret("024b6081-7d02-4f64-bf22-cb740e8c2208".ToSha256()) },
                     AllowedScopes =
                     {
                         IdentityServerConstants.StandardScopes.OpenId,
@@ -199,8 +199,8 @@ namespace IdentityServer
             {
                 new ApiResource
                 {
-                    Name = MyConstants.IntrospectionClientId,
-                    ApiSecrets = {new Secret(MyConstants.IntrospectionClientSecret.ToSha256())},
+                    Name = "e2f59bbd-ef43-4a04-82f8-1b358f74675e",
+                    ApiSecrets = {new Secret("def1743d-dbc3-45ce-b3fa-86b3b42c73d3".ToSha256())},
                     Enabled = true,
                     Scopes =
                     {
