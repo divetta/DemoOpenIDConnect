@@ -24,7 +24,7 @@ namespace SimpleApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<TodoContext>(opt =>
+            services.AddDbContext<TodoItemContext>(opt =>
                                      opt.UseInMemoryDatabase("TodoList"));
 
             services.AddControllers();
@@ -80,11 +80,28 @@ namespace SimpleApi
 
             app.UseMiddleware<AccessTokenHandler>();
 
+            using (var serviceScope = app.ApplicationServices.CreateScope())
+            {
+                var context = serviceScope.ServiceProvider.GetService<TodoItemContext>();
+                AddSeedingData(context);
+            }
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers()
                     .RequireAuthorization("ApiScope");
             });
+        }
+
+        private void AddSeedingData(TodoItemContext context)
+        {
+            context.Database.EnsureCreated();
+            context.TodoItems.Add(new TodoItem() { Id = 1, Name = "Todo #1", IsComplete = false });
+            context.TodoItems.Add(new TodoItem() { Id = 2, Name = "Todo #2", IsComplete = false });
+            context.TodoItems.Add(new TodoItem() { Id = 3, Name = "Todo #3", IsComplete = false });
+            context.TodoItems.Add(new TodoItem() { Id = 4, Name = "Todo #4", IsComplete = false });
+            context.TodoItems.Add(new TodoItem() { Id = 5, Name = "Todo #5", IsComplete = false });
+            context.SaveChanges();
         }
     }
 }

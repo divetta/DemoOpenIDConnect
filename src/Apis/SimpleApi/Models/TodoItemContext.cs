@@ -2,9 +2,9 @@
 
 namespace SimpleApi.Models
 {
-    public class TodoContext : DbContext
+    public class TodoItemContext : DbContext
     {
-        public TodoContext(DbContextOptions<TodoContext> options)
+        public TodoItemContext(DbContextOptions<TodoItemContext> options)
             : base(options)
         {
         }

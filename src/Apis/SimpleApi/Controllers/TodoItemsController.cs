@@ -12,9 +12,9 @@ namespace SimpleApi.Controllers
     [ApiController]
     public class TodoItemsController : ControllerBase
     {
-        private readonly TodoContext _context;
+        private readonly TodoItemContext _context;
 
-        public TodoItemsController(TodoContext context)
+        public TodoItemsController(TodoItemContext context)
         {
             _context = context;
         }
