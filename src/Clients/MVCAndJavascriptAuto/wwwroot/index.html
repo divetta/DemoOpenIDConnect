@@ -5,7 +5,18 @@
     <title></title>
 </head>
 <body>
-    <button id="api">Call API</button>
+    <form action="/" method="post">
+        <input type="text" id="TodoId" value="" />
+        <input type="text" id="TodoName" value="" />
+        <input type="text" id="TodoIsComplete" value="false" />
+        <button id="TodoSubmit">Submit</button>
+    </form>
+    
+
+    <button id="userinfo">Get UserInfo</button>
+
+    <button id="list">List</button>
+
     <button id="logout">Logout</button>
 
     <pre id="results"></pre>

@@ -122,8 +122,8 @@ namespace IdentityServer
                         new Claim(JwtClaimTypes.PhoneNumber, "+5511999999999"),
                         new Claim(JwtClaimTypes.PhoneNumberVerified, "false", ClaimValueTypes.Boolean),
 
-                        new Claim("authorization_group", "AcessoGeral"),
-                        new Claim("entitlement_group", "Bens-Imoveis-Escrita")
+                        new Claim("authorization_group", "General"),
+                        new Claim("entitlement_group", "TodoItem-ReadOnly")
                     }
                 },
                 new TestUser
@@ -142,8 +142,9 @@ namespace IdentityServer
                         new Claim(JwtClaimTypes.PhoneNumber, "+5511999999999"),
                         new Claim(JwtClaimTypes.PhoneNumberVerified, "false", ClaimValueTypes.Boolean),
 
-                        new Claim("authorization_group", "AcessoGeral"),
-                        new Claim("entitlement_group", "Bens-Imoveis-Escrita")
+                        new Claim("authorization_group", "General"),
+                        new Claim("entitlement_group", "TodoItem-ReadOnly"),
+                        new Claim("entitlement_group", "TodoItem-Write")
                     }
                 },
             };

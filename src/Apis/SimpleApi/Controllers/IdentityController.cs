@@ -1,7 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using SimpleApi.Helpers;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace SimpleApi.Controllers
 {
@@ -9,7 +7,6 @@ namespace SimpleApi.Controllers
     public class IdentityController : ControllerBase
     {
         [HttpGet]
-        [ClaimRequirement("BMBVU.Bens-Imoveis-Escrita")]
         public IActionResult Get()
         {
             var claims = (List<string>)HttpContext.Items["UserClaims"];
