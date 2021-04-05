@@ -123,7 +123,7 @@ namespace IdentityServer
                         new Claim(JwtClaimTypes.PhoneNumberVerified, "false", ClaimValueTypes.Boolean),
 
                         new Claim("authorization_group", "General"),
-                        new Claim("entitlement_group", "TodoItem-ReadOnly")
+                        new Claim("entitlement_group", "Hero-ReadOnly")
                     }
                 },
                 new TestUser
@@ -143,8 +143,8 @@ namespace IdentityServer
                         new Claim(JwtClaimTypes.PhoneNumberVerified, "false", ClaimValueTypes.Boolean),
 
                         new Claim("authorization_group", "General"),
-                        new Claim("entitlement_group", "TodoItem-ReadOnly"),
-                        new Claim("entitlement_group", "TodoItem-Write")
+                        new Claim("entitlement_group", "Hero-ReadOnly"),
+                        new Claim("entitlement_group", "Hero-Write")
                     }
                 },
             };

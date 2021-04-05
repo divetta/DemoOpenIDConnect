@@ -24,7 +24,7 @@ namespace SimpleApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<TodoItemContext>(opt =>
+            services.AddDbContext<HeroContext>(opt =>
                                      opt.UseInMemoryDatabase("TodoList"));
 
             services.AddControllers();
@@ -82,7 +82,7 @@ namespace SimpleApi
 
             using (var serviceScope = app.ApplicationServices.CreateScope())
             {
-                var context = serviceScope.ServiceProvider.GetService<TodoItemContext>();
+                var context = serviceScope.ServiceProvider.GetService<HeroContext>();
                 AddSeedingData(context);
             }
 
@@ -93,14 +93,19 @@ namespace SimpleApi
             });
         }
 
-        private void AddSeedingData(TodoItemContext context)
+        private void AddSeedingData(HeroContext context)
         {
             context.Database.EnsureCreated();
-            context.TodoItems.Add(new TodoItem() { Id = 1, Name = "Todo #1", IsComplete = false });
-            context.TodoItems.Add(new TodoItem() { Id = 2, Name = "Todo #2", IsComplete = false });
-            context.TodoItems.Add(new TodoItem() { Id = 3, Name = "Todo #3", IsComplete = false });
-            context.TodoItems.Add(new TodoItem() { Id = 4, Name = "Todo #4", IsComplete = false });
-            context.TodoItems.Add(new TodoItem() { Id = 5, Name = "Todo #5", IsComplete = false });
+            context.Heroes.Add(new Hero() { Id = 11, Name = "Dr Nice" });
+            context.Heroes.Add(new Hero() { Id = 12, Name = "Narco" });
+            context.Heroes.Add(new Hero() { Id = 13, Name = "Bombasto" });
+            context.Heroes.Add(new Hero() { Id = 14, Name = "Celeritas" });
+            context.Heroes.Add(new Hero() { Id = 15, Name = "Magneta" });
+            context.Heroes.Add(new Hero() { Id = 16, Name = "RubberMan" });
+            context.Heroes.Add(new Hero() { Id = 17, Name = "Dynama" });
+            context.Heroes.Add(new Hero() { Id = 18, Name = "Dr IQ" });
+            context.Heroes.Add(new Hero() { Id = 19, Name = "Magma" });
+            context.Heroes.Add(new Hero() { Id = 20, Name = "Tornado" });
             context.SaveChanges();
         }
     }
