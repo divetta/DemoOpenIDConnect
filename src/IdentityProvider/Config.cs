@@ -98,29 +98,6 @@ namespace IdentityServer
                         "authorization_group",
                         "entitlement_group"
                     }
-                },
-                new Client
-                {
-                    ClientId = "123456",
-                    ClientName = "Web Forms - Daimler",
-                    AllowedGrantTypes = GrantTypes.Code,
-                    RequireConsent = false,
-                    AllowOfflineAccess = true,
-                    AccessTokenType = AccessTokenType.Reference,
-
-                    RedirectUris = { "https://localhost:44320/signin-oidc/" },
-                    PostLogoutRedirectUris = { "https://localhost:44320" },
-                    ClientSecrets = {new Secret("654321".ToSha256()) },
-                    AllowedScopes =
-                    {
-                        IdentityServerConstants.StandardScopes.OpenId,
-                        IdentityServerConstants.StandardScopes.Profile,
-                        IdentityServerConstants.StandardScopes.Email,
-                        IdentityServerConstants.StandardScopes.Address,
-                        IdentityServerConstants.StandardScopes.Phone,
-                        "authorization_group",
-                        "entitlement_group"
-                    }
                 }
             };
         }
@@ -144,52 +121,31 @@ namespace IdentityServer
                         new Claim(JwtClaimTypes.EmailVerified, "true", ClaimValueTypes.Boolean),
                         new Claim(JwtClaimTypes.PhoneNumber, "+5511999999999"),
                         new Claim(JwtClaimTypes.PhoneNumberVerified, "false", ClaimValueTypes.Boolean),
-                        //new Claim(JwtClaimTypes.Address, @"{ 'street_address': 'Av Paulista', 'locality': 'Sao Paulo', 'postal_code': 0332303, 'country': 'Brazil' }", IdentityServer4.IdentityServerConstants.ClaimValueTypes.Json)
-                        new Claim("authorization_group", "BMBVU.AcessoGeral"),
-                        new Claim("entitlement_group", "BMBVU.Bens-Imoveis-Escrita"),
-                        new Claim("entitlement_group", "BMBVU.Bens-Imoveis-Leitura"),
-                        new Claim("entitlement_group", "BMBVU.Bens-Veiculos-Escrita"),
-                        new Claim("entitlement_group", "BMBVU.Bens-Veiculos-Leitura"),
-                        new Claim("entitlement_group", "BMBVU.ControleDeAcesso-Usuarios-Escrita"                              ),
-                        new Claim("entitlement_group", "BMBVU.ControleDeAcesso-Usuarios-Leitura"                              ),
-                        new Claim("entitlement_group", "BMBVU.Institucional-Banners-Escrita"                                  ),
-                        new Claim("entitlement_group", "BMBVU.Institucional-Banners-Leitura"                                  ),
-                        new Claim("entitlement_group", "BMBVU.Institucional-Contatos-Escrita"                                 ),
-                        new Claim("entitlement_group", "BMBVU.Institucional-Contatos-Leitura"                                 ),
-                        new Claim("entitlement_group", "BMBVU.Institucional-FAQ-Escrita"                                      ),
-                        new Claim("entitlement_group", "BMBVU.Institucional-FAQ-Leitura"                                      ),
-                        new Claim("entitlement_group", "BMBVU.Relatorios-Bens-Leitura"                                        ),
-                        new Claim("entitlement_group", "BMBVU.Relatorios-Desativados-Leitura"                                 ),
-                        new Claim("entitlement_group", "BMBVU.Relatorios-IntencaoDeCompra-Leitura"                            ),
-                        new Claim("entitlement_group", "BMBVU.Relatorios-PropostaDeMaiorValor-Escrita"                        ),
-                        new Claim("entitlement_group", "BMBVU.Relatorios-PropostaDeMaiorValor-Leitura"                        ),
-                        new Claim("entitlement_group", "BMBVU.Relatorios-PropostaDeMaiorValorArquivos-Leitura"                ),
-                        new Claim("entitlement_group", "BMBVU.VeiculosDaFrota-CadastroVeiculos-Auditoria-Leitura"             ),
-                        new Claim("entitlement_group", "BMBVU.VeiculosDaFrota-CadastroVeiculos-Deposito-Escrita"              ),
-                        new Claim("entitlement_group", "BMBVU.VeiculosDaFrota-CadastroVeiculos-Deposito-Leitura"              ),
-                        new Claim("entitlement_group", "BMBVU.VeiculosDaFrota-CadastroVeiculos-Despesas-Escrita"              ),
-                        new Claim("entitlement_group", "BMBVU.VeiculosDaFrota-CadastroVeiculos-Despesas-Leitura"              ),
-                        new Claim("entitlement_group", "BMBVU.VeiculosDaFrota-CadastroVeiculos-Escrita"                       ),
-                        new Claim("entitlement_group", "BMBVU.VeiculosDaFrota-CadastroVeiculos-Laudo-Escrita"                 ),
-                        new Claim("entitlement_group", "BMBVU.VeiculosDaFrota-CadastroVeiculos-Laudo-Leitura"                 ),
-                        new Claim("entitlement_group", "BMBVU.VeiculosDaFrota-CadastroVeiculos-Leitura"                       ),
-                        new Claim("entitlement_group", "BMBVU.VeiculosDaFrota-CadastroVeiculos-Liberacao-Escrita"             ),
-                        new Claim("entitlement_group", "BMBVU.VeiculosDaFrota-CadastroVeiculos-Liberacao-Leitura"             ),
-                        new Claim("entitlement_group", "BMBVU.VeiculosDaFrota-CadastroVeiculos-Proposta-Escrita"              ),
-                        new Claim("entitlement_group", "BMBVU.VeiculosDaFrota-CadastroVeiculos-Proposta-Leitura"              ),
-                        new Claim("entitlement_group", "BMBVU.VeiculosDaFrota-CadastroVeiculos-Venda-Escrita"                 ),
-                        new Claim("entitlement_group", "BMBVU.VeiculosDaFrota-CadastroVeiculos-Venda-Leitura"                 ),
-                        new Claim("entitlement_group", "BMBVU.VeiculosDaFrota-Parametrizacoes-AlcadaPropostaCompra-Escrita"   ),
-                        new Claim("entitlement_group", "BMBVU.VeiculosDaFrota-Parametrizacoes-AlcadaPropostaCompra-Leitura"   ),
-                        new Claim("entitlement_group", "BMBVU.VeiculosDaFrota-Parametrizacoes-AlcadaPropostaLiberacao-Escrita"),
-                        new Claim("entitlement_group", "BMBVU.VeiculosDaFrota-Parametrizacoes-AlcadaPropostaLiberacao-Leitura"),
-                        new Claim("entitlement_group", "BMBVU.VeiculosDaFrota-PesquisaBensFrota-Leitura"             ),
-                        new Claim("entitlement_group", "BMBVU.VeiculosDaFrota-Relatorios-BensDisponiveis-Leitura"    ),
-                        new Claim("entitlement_group", "BMBVU.VeiculosDaFrota-Relatorios-BensXAnuncios-Leitura"      ),
-                        new Claim("entitlement_group", "BMBVU.VeiculosDaFrota-Relatorios-PagamentosPendentes-Leitura")
 
+                        new Claim("authorization_group", "AcessoGeral"),
+                        new Claim("entitlement_group", "Bens-Imoveis-Escrita")
                     }
-                }
+                },
+                new TestUser
+                {
+                    SubjectId = "bronzo",
+                    Username = "bronzo",
+                    Password = "12345",
+
+                    Claims = new List<Claim>
+                    {
+                        new Claim(JwtClaimTypes.Name, "RAPHAEL BRONZO"),
+                        new Claim(JwtClaimTypes.GivenName, "Raphael"),
+                        new Claim(JwtClaimTypes.FamilyName, "Bronzo"),
+                        new Claim(JwtClaimTypes.Email, "bronzo@gmail.com"),
+                        new Claim(JwtClaimTypes.EmailVerified, "true", ClaimValueTypes.Boolean),
+                        new Claim(JwtClaimTypes.PhoneNumber, "+5511999999999"),
+                        new Claim(JwtClaimTypes.PhoneNumberVerified, "false", ClaimValueTypes.Boolean),
+
+                        new Claim("authorization_group", "AcessoGeral"),
+                        new Claim("entitlement_group", "Bens-Imoveis-Escrita")
+                    }
+                },
             };
         }
 
