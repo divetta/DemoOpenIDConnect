@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
     <UserSecretsId>d6775b86-d542-45c3-b790-480867c96f72</UserSecretsId>
+    <AssemblyName>identityprovider</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>

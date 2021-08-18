@@ -65,6 +65,8 @@ namespace MVCAndJavascriptAuto.Helpers
                 // handle IDP redirection
                 OnRedirectToIdentityProvider = (context) =>
                 {
+                    context.ProtocolMessage.RedirectUri = $"https://{context.Request.Host}{context.Request.PathBase}/signin-oidc";
+
                     if (!string.IsNullOrEmpty(ConfigurationHelper.Instance.AcrValues))
                     {
                         context.ProtocolMessage.Parameters.Add("acr_values", ConfigurationHelper.Instance.AcrValues);

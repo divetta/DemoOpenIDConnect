@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using System;
 using System.Linq;
 
 namespace MVCAndJavascriptAuto.Controllers
@@ -7,6 +9,14 @@ namespace MVCAndJavascriptAuto.Controllers
     [ApiController]
     public class IdentityController : ControllerBase
     {
+
+        readonly ILogger<IdentityController> _logger;
+
+        public IdentityController(ILogger<IdentityController> logger)
+        {
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+        }
+
         [HttpGet]
         public IActionResult Get()
         {

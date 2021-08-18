@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -111,6 +112,8 @@ namespace MVCAndJavascriptAuto.Helpers
 
                 }
             };
+
+            options.Cookie.SameSite = SameSiteMode.None;
 
             return options;
         }

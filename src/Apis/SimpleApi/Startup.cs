@@ -36,6 +36,13 @@ namespace SimpleApi
             .AddOAuth2Introspection("token", options =>
             {
                 options.Authority = ConfigurationHelper.Instance.Authority;
+
+                options.DiscoveryPolicy = new IdentityModel.Client.DiscoveryPolicy()
+                {
+                    ValidateEndpoints = false,
+                    ValidateIssuerName = false
+                };
+
                 options.EnableCaching = true;
                 options.CacheDuration = TimeSpan.FromMinutes(15);
                 options.SaveToken = true;
@@ -62,14 +69,20 @@ namespace SimpleApi
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.Use((context, next) =>
+            {
+                context.Request.Scheme = "https";
+                return next();
+            });
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Api v1"));
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/SimpleApi/swagger/v1/swagger.json", "Api v1"));
             }
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
 
             app.UseRouting();
 

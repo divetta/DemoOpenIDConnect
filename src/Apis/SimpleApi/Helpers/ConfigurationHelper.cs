@@ -39,7 +39,18 @@ namespace SimpleApi.Helpers
             Authority = configuration["IdentityProvider:Authority"];
 
             var client = new HttpClient();
-            var disco = await client.GetDiscoveryDocumentAsync(Authority);
+            //var disco = await client.GetDiscoveryDocumentAsync(Authority);
+            var disco = await client.GetDiscoveryDocumentAsync(
+                new DiscoveryDocumentRequest
+                {
+                    Address = Authority,
+                    Policy =
+                    {
+                        ValidateIssuerName = false,
+                        ValidateEndpoints = false,
+                    },
+                }
+            );
             if (disco.IsError) throw new Exception(disco.Error);
 
             UserInfoEndpoint = disco.UserInfoEndpoint;

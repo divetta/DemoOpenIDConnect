@@ -10,6 +10,15 @@ using Microsoft.Extensions.Hosting;
 using MVCAndJavascriptAuto.Helpers;
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.HttpOverrides;
+using System;
+using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Authentication;
+using Serilog;
+using System.Linq;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.DataProtection;
 
 namespace MVCAndJavascriptAuto
 {
@@ -27,11 +36,14 @@ namespace MVCAndJavascriptAuto
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllersWithViews();
-
-            services.AddHttpClient();
+            services.AddAccessTokenManagement();
+            
+            services.AddControllers();
+            services.AddDistributedMemoryCache();
 
             services.AddOcelot().AddDelegatingHandler<OcelotDelegatingHandler>(true);
+
+            services.AddDataProtection().SetApplicationName("MVCAndJavascriptAuto");
 
             services.AddAuthentication(options =>
             {
@@ -57,39 +69,63 @@ namespace MVCAndJavascriptAuto
 
                 options.CallbackPath = new PathString("/signin-oidc");
             });
-
-            services.AddAuthorization(options =>
-            {
-                options.FallbackPolicy = new AuthorizationPolicyBuilder()
-                    .RequireAuthenticatedUser()
-                    .Build();
-            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILogger<Startup> logger)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseHttpsRedirection();
+            app.Use((context, next) =>
+            {
+                context.Request.Scheme = "https";
+                return next();
+            });
+
+            //app.UseMiddleware<StrictSameSiteExternalAuthenticationMiddleware>();
+            app.UseAuthentication();
+
+            app.Use(async (context, next) =>
+            {
+                logger.LogInformation($"IsAuthenticated? {context.User.Identity.IsAuthenticated}");
+
+                if (context.User.Identity.IsAuthenticated)
+                {
+                    foreach (var claim in context.User.Claims)
+                    {
+                        logger.LogInformation($"{claim.Type}: {claim.Value}");
+                    }
+                }
+
+
+                if (!context.User.Identity.IsAuthenticated && context.Request.Path.Value == "/")
+                {
+                    await context.ChallengeAsync();
+                    return;
+                }
+
+                await next();
+            });
+
+            //app.UseHttpsRedirection();
+
             app.UseDefaultFiles();
+            app.UseStaticFiles();
+
+            app.UseSerilogRequestLogging();
 
             app.UseRouting();
 
             app.UseAuthentication();
             app.UseAuthorization();
 
-            app.UseStaticFiles();
-
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllerRoute(
-                    name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}")
-                .RequireAuthorization();
+                endpoints.MapControllers()
+                    .RequireAuthorization();
             });
 
             app.UseOcelot().Wait();

@@ -47,7 +47,18 @@ namespace MVCAndJavascriptAuto.Helpers
             AcrValues = configuration["IdentityProvider:AcrValues"];
 
             var client = new HttpClient();
-            var disco = await client.GetDiscoveryDocumentAsync(Authority);
+            //var disco = await client.GetDiscoveryDocumentAsync(Authority);
+            var disco = await client.GetDiscoveryDocumentAsync(
+                new DiscoveryDocumentRequest
+                {
+                    Address = Authority,
+                    Policy =
+                    {
+                        ValidateIssuerName = false,
+                        ValidateEndpoints = false,
+                    },
+                }
+            );
             if (disco.IsError) throw new Exception(disco.Error);
 
             AuthorizationEndpoint = disco.AuthorizeEndpoint;

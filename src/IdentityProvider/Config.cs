@@ -62,8 +62,8 @@ namespace IdentityServer
                     AllowOfflineAccess = true,
                     AccessTokenType = AccessTokenType.Reference,
 
-                    RedirectUris = { "https://localhost:44302/signin-oidc" },
-                    PostLogoutRedirectUris = { "https://localhost:44302/signout-callback-oidc" },
+                    RedirectUris = { "https://localhost/Client/signin-oidc", "http://localhost/Client/signin-oidc" },
+                    PostLogoutRedirectUris = { "https://localhost/Client/signout-callback-oidc" },
                     ClientSecrets = {new Secret("024b6081-7d02-4f64-bf22-cb740e8c2208".ToSha256()) },
                     AllowedScopes =
                     {
