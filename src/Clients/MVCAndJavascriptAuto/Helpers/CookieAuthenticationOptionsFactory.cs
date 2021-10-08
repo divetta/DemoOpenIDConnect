@@ -43,13 +43,15 @@ namespace MVCAndJavascriptAuto.Helpers
                         {
                             // since our cookie lifetime is based on the access token one,
                             // refresh token if we have less than 5 min. from cookie lifetime
-                            var now = DateTimeOffset.UtcNow;
-                            //var timeElapsed = now.Subtract(x.Properties.IssuedUtc.Value);
-                            var timeRemaining = x.Properties.ExpiresUtc.Value.Subtract(now);
-                            if (timeRemaining < TimeSpan.FromMinutes(5))
+                            var expiresUtc = x.Properties.ExpiresUtc;
+                            var timeRemaining = DateTime.Parse(identity.FindFirst("access_token_expiresin").Value).ToUniversalTime().Subtract(DateTime.UtcNow);
+
+                            //if (timeRemaining < TimeSpan.FromMinutes(5))
+                            if (timeRemaining < TimeSpan.FromMinutes(1))
                             {
                                 var accessTokenClaim = identity.FindFirst("access_token");
                                 var refreshTokenClaim = identity.FindFirst("refresh_token");
+                                var accessTokenExpiresin = identity.FindFirst("access_token_expiresin");
                                 string newAccessToken = string.Empty;
                                 string newRefreshToken = string.Empty;
                                 string newExpiration = string.Empty;
@@ -84,18 +86,21 @@ namespace MVCAndJavascriptAuto.Helpers
                                 {
                                     identity.RemoveClaim(accessTokenClaim);
                                     identity.RemoveClaim(refreshTokenClaim);
+                                    identity.RemoveClaim(accessTokenExpiresin);
 
                                     identity.AddClaims(new[]
                                     {
-                                    new Claim("access_token", newAccessToken),
-                                    new Claim("refresh_token", newRefreshToken)
+                                        new Claim("access_token", newAccessToken),
+                                        new Claim("refresh_token", newRefreshToken),
+                                        new Claim("access_token_expiresin", DateTime.Now.AddSeconds(int.Parse(newExpiration)).ToUniversalTime().ToString("o"))
                                     });
 
+                                    x.Properties.Items[".Token.access_token"] = newAccessToken;
                                     // indicate to the cookie middleware to renew the session cookie
                                     // the new lifetime will be the same as the old one, so the alignment
                                     // between cookie and access token is preserved
+                                    x.Properties.ExpiresUtc = expiresUtc;
                                     x.ShouldRenew = true;
-                                    x.Properties.ExpiresUtc = DateTime.Now.AddSeconds(int.Parse(newExpiration)).ToUniversalTime();
                                 }
                             }
                         }

@@ -61,6 +61,9 @@ namespace IdentityServer
                     RequireConsent = false,
                     AllowOfflineAccess = true,
                     AccessTokenType = AccessTokenType.Reference,
+                    AccessTokenLifetime = 120,//360,//1800,
+                    //IdentityTokenLifetime = 900,
+                    //AbsoluteRefreshTokenLifetime = 7776000,
 
                     RedirectUris = { "https://localhost:44302/signin-oidc" },
                     PostLogoutRedirectUris = { "https://localhost:44302/signout-callback-oidc" },

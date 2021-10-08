@@ -92,16 +92,17 @@ namespace MVCAndJavascriptAuto.Helpers
                     var identity = (ClaimsIdentity)x.Principal.Identity;
                     identity.AddClaims(new[]
                     {
-                            new Claim("access_token", x.TokenEndpointResponse.AccessToken),
-                            new Claim("refresh_token", x.TokenEndpointResponse.RefreshToken)
-                        });
+                        new Claim("access_token", x.TokenEndpointResponse.AccessToken),
+                        new Claim("refresh_token", x.TokenEndpointResponse.RefreshToken),
+                        new Claim("access_token_expiresin", DateTime.Now.AddSeconds(int.Parse(x.TokenEndpointResponse.ExpiresIn)).ToUniversalTime().ToString("o"))
+                    });
 
                     // so that we don't issue a session cookie but one with a fixed expiration
                     x.Properties.IsPersistent = true;
 
                     // align expiration of the cookie with expiration of the
                     // access token
-                    x.Properties.ExpiresUtc = DateTime.Now.AddSeconds(int.Parse(x.TokenEndpointResponse.ExpiresIn)).ToUniversalTime();
+                    x.Properties.ExpiresUtc = DateTime.Now.AddHours(4);
                     return Task.CompletedTask;
                 },
 
