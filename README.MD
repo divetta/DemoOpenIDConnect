@@ -7,3 +7,4 @@ Sample application to demonstrate the [OpenID Connect (OIDC)](https://openid.net
 ## .NET Version
 
 .NET 5.0
+
